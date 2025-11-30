@@ -3,6 +3,7 @@ package main
 import (
 	"aoc2025/env"
 	"aoc2025/info"
+	"aoc2025/twentyfour"
 	"fmt"
 	"log"
 	"os"
@@ -31,7 +32,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	count := twentyfour.CountSafeLevels(data)
 
-	fmt.Println(data)
+	fmt.Println(count)
 	fmt.Println("End of program, Bye bye!")
 }
