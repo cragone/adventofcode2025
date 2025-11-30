@@ -1,17 +1,14 @@
 package main
 
 import (
+	"aoc2025/env"
 	"aoc2025/info"
 	"fmt"
+	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func begin() (*info.Application, error) {
-	if err := godotenv.Load(); err != nil {
-		return nil, fmt.Errorf("could not read env file %w", err)
-	}
 	session := os.Getenv("AOC_SESSION")
 	if session == "" {
 		return nil, fmt.Errorf("no session cookie supplied")
@@ -22,15 +19,19 @@ func begin() (*info.Application, error) {
 }
 
 func main() {
+	fmt.Println("Booting up advent of code application...")
+	if err := env.ReadENV(".env"); err != nil {
+		log.Fatal(err)
+	}
 	app, err := begin()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	data, err := app.GetData("https://adventofcode.com/2024/day/2/input")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	fmt.Println(data)
-	fmt.Println("booting up advent of code application")
+	fmt.Println("End of program, Bye bye!")
 }
