@@ -16,6 +16,8 @@ func CheckForIncreasing(nums string) bool {
 		return false
 	}
 
+	//use a map check to see if the number before and after are compatible with it
+
 	for _, s := range parts[1:] {
 		current, err := strconv.Atoi(s)
 		if err != nil {
@@ -73,4 +75,16 @@ func CountSafeLevels(data string) int {
 
 	}
 	return count
+}
+
+//problem dampener works if you can remove one number to make the report safe it is safe
+
+func DecreasingProblemDampener(nums []int) []int {
+
+	return nums
+}
+
+func IncreasingProblemDampener(nums []int) []int {
+
+	return nums
 }

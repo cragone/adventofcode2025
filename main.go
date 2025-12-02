@@ -3,7 +3,7 @@ package main
 import (
 	"aoc2025/env"
 	"aoc2025/info"
-	"aoc2025/twentyfour"
+	"aoc2025/twentyfive"
 	"fmt"
 	"log"
 	"os"
@@ -28,12 +28,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	data, err := app.GetData("https://adventofcode.com/2024/day/2/input")
+	data, err := app.GetData("https://adventofcode.com/2025/day/1/input")
 	if err != nil {
 		log.Fatal(err)
 	}
-	count := twentyfour.CountSafeLevels(data)
 
-	fmt.Println(count)
+	start := 50
+
+	password := twentyfive.GetPassword(start, data)
+
+	fmt.Println("password:", password)
 	fmt.Println("End of program, Bye bye!")
 }
