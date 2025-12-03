@@ -2,7 +2,6 @@ package twentyfive
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -22,44 +21,61 @@ import (
 
 // need to update to count anytime the dial clicks 0
 func GetPassword(current int, data string) (password int) {
-	for command := range strings.FieldsSeq(data) {
+	for _, command := range strings.Fields(data) {
+		var count int
 		fmt.Printf("current is: %d, command is: %s ", current, command)
-		switch {
-		case strings.Contains(command, "L"):
-			current = MoveDialLeft(current, command)
-		default:
-			current = MoveDialRight(current, command)
+
+		if strings.Contains(command, "L") {
+			current, count = MoveDialLeft(current, command)
+		} else {
+			current, count = MoveDialRight(current, command)
 		}
+
+		password += count
 
 		if current > 99 || current < 0 {
 			fmt.Printf("command that caused problem:%s, current: %d\n", command, current)
 			break
 		}
-		fmt.Printf("cur: %d\n", current)
-		if current == 0 {
-			password++
-			fmt.Println("added to password")
-		}
-	}
 
+		fmt.Printf("cur: %d, password: %d, added: %d\n", current, password, count)
+	}
 	return password
 }
 
 // double check math
-func MoveDialLeft(current int, command string) int {
-	command = strings.ReplaceAll(command, "L", "")
-	num, err := strconv.Atoi(command)
-	if err != nil {
-		log.Fatal(err)
+func MoveDialLeft(current int, command string) (int, int) {
+	command = strings.TrimPrefix(command, "L")
+	move, _ := strconv.Atoi(command)
+
+	full := move / 100
+	partial := move % 100
+
+	end := (current - partial + 100) % 100
+
+	touches := full
+
+	if partial > 0 && current > 0 && partial >= current {
+		touches++
 	}
-	return (((current - num) % 100) + 100) % 100
+
+	return end, touches
 }
 
-func MoveDialRight(current int, command string) int {
-	command = strings.ReplaceAll(command, "R", "")
-	num, err := strconv.Atoi(command)
-	if err != nil {
-		log.Fatal(err)
+func MoveDialRight(current int, command string) (int, int) {
+	command = strings.TrimPrefix(command, "R")
+	move, _ := strconv.Atoi(command)
+
+	full := move / 100
+	partial := move % 100
+
+	end := (current + partial) % 100
+
+	touches := full
+
+	if partial > 0 && current+partial >= 100 {
+		touches++
 	}
-	return (current + num) % 100
+
+	return end, touches
 }
