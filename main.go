@@ -28,15 +28,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	data, err := app.GetData("https://adventofcode.com/2025/day/1/input")
+	data, err := app.GetData("https://adventofcode.com/2025/day/2/input")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	start := 50
+	// test := "24-41,1-15"
+	count := twentyfive.InvalidIdCount(data)
 
-	password := twentyfive.GetPassword(start, data)
+	fmt.Println(count)
 
-	fmt.Println("password:", password)
-	fmt.Println("End of program, Bye bye!")
 }
