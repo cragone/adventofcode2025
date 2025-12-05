@@ -1,58 +1,52 @@
 package twentyfive
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
 
-func InvalidIdCount(data string) (count int) {
+func InvalidIdCount(data string) (sum int) {
 	fields := strings.Split(data, ",")
-	for _, field := range fields {
-		numbers := strings.Split(field, "-")
-		num1 := numbers[0][0:(len(numbers[0]) / 2)]
-		num2 := numbers[0][(len(numbers[0]) / 2):len(numbers[0])]
-		start, _ := strconv.Atoi(numbers[0])
-		final, _ := strconv.Atoi(numbers[1])
-		one, two := ConverStringsToNumbers(num1, num2)
-		if one > two {
-			count = FindRepeatingNumberSequences(two, start, final, count)
-		} else {
-			count = FindRepeatingNumberSequences(one, start, final, count)
-		}
 
+	for _, field := range fields {
+		parts := strings.Split(field, "-")
+		start, _ := strconv.Atoi(parts[0])
+		end, _ := strconv.Atoi(parts[1])
+
+		for n := start; n <= end; n++ {
+			if isRepeatedPattern(n) {
+				sum += n
+			}
+		}
 	}
 
 	return
 }
 
-func FindRepeatingNumberSequences(number, start, final, count int) int {
-	if ConvertNumbersToANumber(number, number) < start {
-		number++
-		return FindRepeatingNumberSequences(number, start, final, count)
+func isRepeatedPattern(n int) bool {
+	s := strconv.Itoa(n)
+	L := len(s)
+
+	for size := 1; size*2 <= L; size++ {
+		if L%size != 0 {
+			continue
+		}
+
+		pattern := s[:size]
+		repeats := L / size
+
+		ok := true
+		for i := 1; i < repeats; i++ {
+			if s[i*size:(i+1)*size] != pattern {
+				ok = false
+				break
+			}
+		}
+
+		if ok && repeats >= 2 {
+			return true
+		}
 	}
 
-	if ConvertNumbersToANumber(number, number) >= final {
-		return count
-	}
-
-	count += ConvertNumbersToANumber(number, number)
-	fmt.Println("current:", ConvertNumbersToANumber(number, number))
-	number++
-	return FindRepeatingNumberSequences(number, start, final, count)
+	return false
 }
-
-func ConverStringsToNumbers(stringOne string, stringTwo string) (int, int) {
-
-	one, _ := strconv.Atoi(stringOne)
-	two, _ := strconv.Atoi(stringTwo)
-
-	return one, two
-}
-
-func ConvertNumbersToANumber(one int, two int) int {
-	num, _ := strconv.Atoi(fmt.Sprintf("%d%d", one, two))
-	return num
-}
-
-// 49 - 86 has three repeating for both 1-36 and the ladder

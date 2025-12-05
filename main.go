@@ -33,7 +33,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// test := "24-41,1-15"
+	// test := "1000-2000,500-1500"
 	count := twentyfive.InvalidIdCount(data)
 
 	fmt.Println(count)
